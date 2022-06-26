@@ -64,7 +64,8 @@ class ClientController extends Controller
 
             return redirect('clients');
         }
-        
+        $data['titles'] = $this->titles;
+        $data['modify'] = 1;
         return view('client/form', $data);
     }
 
@@ -73,7 +74,7 @@ class ClientController extends Controller
             return view('client/create');
     }
 
-    public function show($client_id)
+    public function show($client_id, Request $request)
     {
         $data = [];
         $data['titles'] = $this->titles;
@@ -87,6 +88,9 @@ class ClientController extends Controller
         $data['city'] = $client_data->city;
         $data['state'] = $client_data->state;
         $data['email'] = $client_data->email;
+
+        $request->session()->put('last_updated', $client_data->name . ' ' . 
+        $client_data->last_name);
         
         return view('client/form', $data);
     }
